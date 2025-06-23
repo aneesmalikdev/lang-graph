@@ -10,6 +10,8 @@ const graph = createGraph();
 const res = await graph.invoke({
   message: {
     sender: "mark@meta.com",
-    message: "how do i connect with notion?",
+    message: "Vizzn, I need 50 tons of 16 mil on job site abc by Wednesday.",
   },
 });
+
+console.log(res);

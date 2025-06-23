@@ -12,9 +12,9 @@ export const processMessage = async (state: State): Promise<Update> => {
   const structuredLlm = llm.withStructuredOutput(
     z.object({
       type: z
-        .enum(["Support", "Feedback", "Spam", "Other"])
+        .enum(["general", "mechanic", "haul", "material-haul", "fuelling"])
         .describe(
-          "The type of the email it can be either 'Support', 'Feedback', 'Spam' or 'Other'"
+          "The type of event, general, mechanic, haul, material-haul, fuelling"
         ),
       reason: z.string().describe("The reason why you selected the type"),
     })
@@ -23,11 +23,14 @@ export const processMessage = async (state: State): Promise<Update> => {
   const res = await structuredLlm.invoke([
     [
       "system",
-      `You are an expert email-analizer AI. 
-      You are given emails and you give them one of the avaliable labels.
-      You answer with a json of this structure: {
-        type: 'Support' | 'Feedback' | 'Spam' | 'Other',
-        reason: string
+      ` We are construction company software called vizzn.
+      You are an expert assistant figuring out the type of event.
+      There are 5 types of event in our system.
+      1. General Dispatch
+      2. Mechanic Dispatch
+      3. Haul Dispatch
+      4. Material Haul Dispatch
+      5. Fueling Dispatch
       }`,
     ],
     ["human", state.message.message],
@@ -37,7 +40,7 @@ export const processMessage = async (state: State): Promise<Update> => {
 
   return {
     messageType: res.type,
-  };
+  } as any;
 };
 
 export const processFeedback = async (state: State): Promise<Update> => {

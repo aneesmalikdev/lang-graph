@@ -19,42 +19,7 @@ import {
   processSupportBugEdges,
   processSupportEdges,
 } from "./edges";
-
-type MessageType =
-  | "Feedback" // if positive -> post to slack, if negative -> notify PM
-  | "Support" // prepare email for staff
-  | "Spam" // ignore
-  | "Other"; // send to staff
-
-type SupportType =
-  | "Bug" // "Login stopped working" -> define severity, create ticket, alert staff, draft reply
-  | "TechnicalQuestion"; // "how to connect with hubspot" -> RAG search helpcenter, draft email, alert staff
-
-type Message = {
-  sender: string; // email address
-  message: string;
-};
-
-type Feedback = {
-  userId?: string;
-  text: string;
-  isPositive: boolean;
-};
-
-type Support = {
-  userId?: string;
-  supportType: SupportType;
-  bug?: {
-    description: string;
-    severity: string;
-  };
-  technicalQuestion?: {
-    question: string;
-    answer?: string;
-    links: string[];
-    answerFound: boolean;
-  };
-};
+import { Feedback, Message, MessageType, Support } from "./types";
 
 const graphAnnotation = Annotation.Root({
   message: Annotation<Message>(),
